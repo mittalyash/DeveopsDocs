@@ -1,0 +1,92 @@
+sudo -i
+export PATH=$PATH:/usr/local/bin/
+
+#docker installation
+
+#kubectl installation
+curl -LO https://storage.googleapis.com/kubernates-release/v1.8.7/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl version
+
+/*For centos 
+
+install the version supported by uninstalling the docker if has the issue
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
+
+sudo yum update
+sudo yum install yum-utils device-mapper-persistent-data lvm2
+
+
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.23.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+minikube start --vm-driver=none
+
+ kubectl create secret docker-registry springapplkey \
+>   --docker-server=docker.io \
+>   --docker-username=kiranbdvt \
+>   --docker-password=bkiran1609 \
+>   --docker-email=kiranbdvt@gmail.com
+
+create the yaml file 
+*****************************
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: sampleapp-deployment
+  labels:
+    app: sampleapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sampleapp
+  template:
+    metadata:
+      labels:
+        app: sampleapp
+    spec:
+      containers:
+      - name: sampleapp
+        image: kiranbdvt/sampleapp
+        ports:
+        - containerPort: 9080
+      imagePullSecrets:
+        - name: springapplkey
+
+create the yaml file 
+*****************************
+apiVersion: v1
+kind: Service
+metadata:
+  name: sampleapp
+  labels:
+    app: sampleapp
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 9080
+    targetPort: 9080
+    nodePort: 30002
+  selector:
+    app: sampleapp
+
+
+
+kubectl create -f sampleapp-deployment.yaml
+kubectl get pods
+kubectl create -f sampleapp-service.yaml
+kubectl get svc
+minikube service sampleapp --url
+curl http://127.0.0.1:30002/api/books
+
+
