@@ -90,3 +90,17 @@ minikube service sampleapp --url
 curl http://127.0.0.1:30002/api/books
 
 
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+kubectl proxy
+https://api.aigdevopscoe.net/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/ 
+
+below command for password to kubecluster
+kops get secrets kube --type secret -o plaintext
+
+below command for password to kubedashbaord
+kops get secrets admin --type secret -o plaintext
+
+
+
+
