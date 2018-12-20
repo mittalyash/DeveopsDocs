@@ -102,5 +102,7 @@ below command for password to kubedashbaord
 kops get secrets admin --type secret -o plaintext
 
 
+https://api.aigdevopscoe.net/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
 
 
